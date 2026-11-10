@@ -1,12 +1,12 @@
 # git-translate 🌐💻
 
-<img width="1024" height="1025" alt="image" src="https://github.com/user-attachments/assets/84083bb3-0ba3-4911-b750-8d6036d95fa0" />
+<img width="150" height="150" alt="image" src="https://github.com/user-attachments/assets/84083bb3-0ba3-4911-b750-8d6036d95fa0" />
 
 **git-translate** is an open-source, web-based tool designed to translate scripts and source code from one programming language to another—functioning like Google Translate or Convertio, but built exclusively for developers.
 
 Need to convert UI styles from JavaScript/JSX object literals straight into pure CSS, or map logic rules across frameworks? Just paste your code, select the parameters, and get your compiled syntax instantly.
 
-🔗 **Live Demo:** [Deploying... Your Vercel Link Here]
+🔗 **Live Demo:** 
 
 ---
 
