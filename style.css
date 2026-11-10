@@ -9,7 +9,7 @@ body {
     font-family: 'Open Sans', sans-serif;
     background-color: #f8f9fa;
     color: #3c4043;
-    min-h: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -89,7 +89,7 @@ body {
     overflow: hidden;
 }
 
-/* --- Navigation & Language Tabs --- */
+/* --- Navigation & Language Tabs Area --- */
 .lang-tabs-bar {
     display: flex;
     align-items: center;
@@ -111,27 +111,36 @@ body {
     justify-content: space-between;
 }
 
-.lang-tab {
+/* Custom Select Dropdowns Styling (Google Style) */
+.select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    border-bottom: 3px solid #1a73e8;
+}
+
+.lang-dropdown {
     background: none;
     border: none;
     height: 100%;
-    padding: 0 16px;
+    padding: 0 28px 0 16px;
+    font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     font-weight: 500;
-    color: #5f6368;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    transition: color 0.15s ease;
-}
-
-.lang-tab.active {
     color: #1a73e8;
-    border-bottom-color: #1a73e8;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
 }
 
-.lang-tab.disabled {
-    opacity: 0.38;
-    cursor: not-allowed;
+.dropdown-arrow {
+    position: absolute;
+    right: 6px;
+    color: #1a73e8;
+    pointer-events: none;
+    font-size: 20px !important;
 }
 
 /* --- Action Buttons --- */
@@ -230,10 +239,6 @@ textarea {
 
 .input-panel textarea::placeholder {
     color: #9aa0a6;
-}
-
-.output-panel textarea {
-    color: #202124;
 }
 
 /* --- Panel Control Footer --- */
