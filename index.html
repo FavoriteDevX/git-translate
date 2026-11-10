@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>git-translate | Code Translator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://jsdelivr.net"></script>
+    <!-- Google Fonts & Icons -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        code, textarea { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-xs">
+        <div class="flex items-center space-x-3">
+            <span class="material-symbols-outlined text-indigo-600 text-3xl">translate</span>
+            <span class="font-bold text-xl tracking-tight text-gray-800">git-translate<span class="text-indigo-600">.</span></span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="https://github.com" target="_blank" class="text-gray-500 hover:text-gray-800 flex items-center space-x-1 text-sm font-medium transition">
+                <span>View on GitHub</span>
+                <span class="material-symbols-outlined text-sm">open_in_new</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content (Translator Dashboard) -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8 flex flex-col space-y-6">
+        
+        <!-- Header Info -->
+        <div class="text-center max-w-2xl mx-auto mt-4 mb-2">
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
+                Convert Code in Seconds
+            </h1>
+            <p class="mt-2 text-gray-500 text-base">
+                An open-source translator tailored for programming languages. Paste your script, select targets, and compile instantly.
+            </p>
+        </div>
+
+        <!-- Translator Container -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
+            
+            <!-- Language Selectors Toolbar (Google Translate Style) -->
+            <div class="bg-gray-50 border-b border-gray-200 p-3 flex flex-wrap items-center justify-between gap-3">
+                <!-- Source Language -->
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider pl-2">From:</span>
+                    <select id="sourceLang" class="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg px-3 py-1.5 font-medium focus:outline-hidden focus:ring-2 focus:ring-indigo-500">
+                        <option value="javascript_obj">JavaScript Object</option>
+                        <option value="json">JSON Data</option>
+                    </select>
+                </div>
+
+                <!-- Swap Button -->
+                <button class="p-1.5 rounded-full hover:bg-gray-200 text-gray-500 transition cursor-pointer">
+                    <span class="material-symbols-outlined block">swap_horiz</span>
+                </button>
+
+                <!-- Target Language -->
+                <div class="flex items-center space-x-2 mr-auto md:ml-4">
+                    <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">To:</span>
+                    <select id="targetLang" class="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg px-3 py-1.5 font-medium focus:outline-hidden focus:ring-2 focus:ring-indigo-500">
+                        <option value="css">Pure CSS</option>
+                    </select>
+                </div>
+
+                <!-- Action Button -->
+                <button id="translateBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-5 py-2 rounded-xl transition flex items-center space-x-2 shadow-xs cursor-pointer">
+                    <span class="material-symbols-outlined text-sm">bolt</span>
+                    <span>Translate</span>
+                </button>
+            </div>
+
+            <!-- Dual Panel Textareas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200 flex-1 min-h-[380px]">
+                
+                <!-- Input Panel -->
+                <div class="relative flex flex-col p-4 bg-white">
+                    <textarea id="inputCode" placeholder="Paste your JavaScript object here... (e.g., { backgroundColor: 'blue', fontSize: '14px' })" class="w-full h-full min-h-[300px] resize-none border-0 p-2 text-gray-800 focus:ring-0 focus:outline-hidden text-sm leading-relaxed" spellcheck="false">{
+  backgroundColor: "indigo",
+  padding: "16px",
+  borderRadius: "8px",
+  color: "#ffffff"
+}</textarea>
+                    <button id="clearBtn" class="absolute bottom-4 right-4 p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-500 transition tooltip cursor-pointer" title="Clear text">
+                        <span class="material-symbols-outlined text-base block">close</span>
+                    </button>
+                </div>
+
+                <!-- Output Panel -->
+                <div class="relative flex flex-col p-4 bg-gray-50">
+                    <textarea id="outputCode" readonly placeholder="Translated CSS code will appear here..." class="w-full h-full min-h-[300px] resize-none border-0 p-2 text-gray-800 bg-transparent focus:ring-0 focus:outline-hidden text-sm leading-relaxed" spellcheck="false"></textarea>
+                    <button id="copyBtn" class="absolute bottom-4 right-4 px-3 py-1.5 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 text-gray-600 text-xs font-medium transition shadow-2xs flex items-center space-x-1 cursor-pointer">
+                        <span class="material-symbols-outlined text-sm">content_copy</span>
+                        <span id="copyText">Copy</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-400">
+        <p>&copy; 2026 git-translate. Built for developers. Open Source project.</p>
+    </footer>
+
+    <!-- Translation Core Logic -->
+    <script>
+        const inputCode = document.getElementById('inputCode');
+        const outputCode = document.getElementById('outputCode');
+        const translateBtn = document.getElementById('translateBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const copyText = document.getElementById('copyText');
+
+        // Simple Compiler Logic: JS Object to CSS rules
+        function jsToCss(jsString) {
+            try {
+                // Formatting into valid JSON-like structure evaluating the string safely
+                let cleaned = jsString.trim();
+                if (!cleaned.startsWith('{')) cleaned = `{${cleaned}}`;
+                
+                // Evaluating string to object securely for demo purposes
+                const obj = new Function(`return ${cleaned}`)();
+                
+                let cssResult = ".translated-style {\n";
+                for (const [key, value] of Object.entries(obj)) {
+                    // Convert camelCase to kebab-case (e.g., backgroundColor -> background-color)
+                    const cssProperty = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+                    cssResult += `  ${cssProperty}: ${value};\n`;
+                }
+                cssResult += "}";
+                return cssResult;
+            } catch (error) {
+                return `/* Translation Error */\nInvalid format. Please verify your JavaScript Object structure.`;
+            }
+        }
+
+        // Event Listeners
+        translateBtn.addEventListener('click', () => {
+            const source = inputCode.value;
+            if(!source.trim()) {
+                outputCode.value = "/* Please insert code on the left panel to translate */";
+                return;
+            }
+            outputCode.value = jsToCss(source);
+        });
+
+        clearBtn.addEventListener('click', () => {
+            inputCode.value = '';
+            outputCode.value = '';
+        });
+
+        copyBtn.addEventListener('click', () => {
+            if(!outputCode.value) return;
+            navigator.clipboard.writeText(outputCode.value);
+            copyText.textContent = "Copied!";
+            setTimeout(() => { copyText.textContent = "Copy"; }, 2000);
+        });
+    </script>
+</body>
+</html>
