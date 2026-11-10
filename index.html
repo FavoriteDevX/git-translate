@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <!-- Link para o arquivo CSS Externo -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -34,24 +33,36 @@
         <!-- Main Translator Card Wrapper -->
         <div class="translator-card">
             
-            <!-- Tab Headers (Linguagens) -->
+            <!-- Tab Headers with Language Selectors (Estilo Google) -->
             <div class="lang-tabs-bar">
-                <!-- Left Source Tabs -->
+                
+                <!-- Left Source Select -->
                 <div class="source-tabs">
-                    <button class="lang-tab active">JavaScript Object</button>
-                    <button class="lang-tab disabled">JSON Data</button>
+                    <div class="select-wrapper">
+                        <select id="sourceLang" class="lang-dropdown">
+                            <option value="javascript_obj" selected>JavaScript Object</option>
+                            <option value="json">JSON Data</option>
+                        </select>
+                        <span class="material-symbols-outlined dropdown-arrow">arrow_drop_down</span>
+                    </div>
                 </div>
 
                 <!-- Swap Button Middle -->
                 <div class="swap-action">
-                    <button class="icon-btn-circle" title="Swap languages">
+                    <button class="icon-btn-circle" id="swapBtn" title="Swap languages">
                         <span class="material-symbols-outlined">swap_horiz</span>
                     </button>
                 </div>
 
-                <!-- Right Target Tabs -->
+                <!-- Right Target Select -->
                 <div class="target-tabs">
-                    <button class="lang-tab active">Pure CSS</button>
+                    <div class="select-wrapper">
+                        <select id="targetLang" class="lang-dropdown">
+                            <option value="css" selected>Pure CSS</option>
+                            <option value="tailwind" disabled>Tailwind Utility Class (Soon)</option>
+                        </select>
+                        <span class="material-symbols-outlined dropdown-arrow">arrow_drop_down</span>
+                    </div>
                     
                     <!-- Translate Action Button Right-Aligned -->
                     <button id="translateBtn" class="primary-action-btn">
@@ -65,7 +76,7 @@
                 
                 <!-- Input Panel -->
                 <div class="panel input-panel">
-                    <textarea id="inputCode" placeholder="Paste your JavaScript object here..." spellcheck="false">{
+                    <textarea id="inputCode" placeholder="Paste your source structure here..." spellcheck="false">{
   backgroundColor: "indigo",
   padding: "16px",
   borderRadius: "8px",
@@ -73,7 +84,7 @@
 }</textarea>
                     
                     <div class="panel-footer">
-                        <span class="panel-info-tag">Source Code</span>
+                        <span class="panel-info-tag" id="sourceTag">Source Code</span>
                         <button id="clearBtn" class="icon-btn-circle" title="Clear text">
                             <span class="material-symbols-outlined">close</span>
                         </button>
@@ -85,7 +96,7 @@
                     <textarea id="outputCode" readonly placeholder="Translation" spellcheck="false"></textarea>
                     
                     <div class="panel-footer">
-                        <span class="panel-info-tag">Compiled CSS</span>
+                        <span class="panel-info-tag" id="targetTag">Compiled CSS</span>
                         <button id="copyBtn" class="icon-btn-circle" title="Copy code">
                             <span class="material-symbols-outlined">content_copy</span>
                             <span id="copyText" class="tooltip-text">Copied!</span>
@@ -111,12 +122,32 @@
         const clearBtn = document.getElementById('clearBtn');
         const copyBtn = document.getElementById('copyBtn');
         const copyText = document.getElementById('copyText');
+        const sourceLang = document.getElementById('sourceLang');
+        const targetLang = document.getElementById('targetLang');
+        const sourceTag = document.getElementById('sourceTag');
+        const targetTag = document.getElementById('targetTag');
 
-        function jsToCss(jsString) {
+        // Core compilation logic
+        function compileCode() {
+            const source = inputCode.value;
+            const mode = sourceLang.value;
+
+            if (!source.trim()) {
+                outputCode.value = "";
+                return;
+            }
+
             try {
-                let cleaned = jsString.trim();
-                if (!cleaned.startsWith('{')) cleaned = `{${cleaned}}`;
-                const obj = new Function(`return ${cleaned}`)();
+                let cleaned = source.trim();
+                let obj;
+
+                // Handle format parsing depending on selector
+                if (mode === 'json') {
+                    obj = JSON.parse(cleaned);
+                } else {
+                    if (!cleaned.startsWith('{')) cleaned = `{${cleaned}}`;
+                    obj = new Function(`return ${cleaned}`)();
+                }
                 
                 let cssResult = ".translated-style {\n";
                 for (const [key, value] of Object.entries(obj)) {
@@ -124,19 +155,18 @@
                     cssResult += `  ${cssProperty}: ${value};\n`;
                 }
                 cssResult += "}";
-                return cssResult;
+                outputCode.value = cssResult;
             } catch (error) {
-                return `/* Syntax Error */\nCould not compile structure. Ensure it is a valid JavaScript Object format.`;
+                outputCode.value = `/* Syntax Error */\nCould not compile structure. Ensure it fits a valid ${sourceLang.options[sourceLang.selectedIndex].text} format.`;
             }
         }
 
-        translateBtn.addEventListener('click', () => {
-            const source = inputCode.value;
-            if(!source.trim()) {
-                outputCode.value = "";
-                return;
-            }
-            outputCode.value = jsToCss(source);
+        // Event Listeners
+        translateBtn.addEventListener('click', compileCode);
+        
+        sourceLang.addEventListener('change', () => {
+            sourceTag.textContent = sourceLang.options[sourceLang.selectedIndex].text;
+            compileCode();
         });
 
         clearBtn.addEventListener('click', () => {
@@ -151,8 +181,9 @@
             setTimeout(() => { copyText.classList.remove('show'); }, 2000);
         });
 
+        // Initialize on load
         window.addEventListener('DOMContentLoaded', () => {
-            if(inputCode.value.trim()) outputCode.value = jsToCss(inputCode.value);
+            if(inputCode.value.trim()) compileCode();
         });
     </script>
 </body>
