@@ -4,104 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>git-translate | Code Translator</title>
-    <!-- Tailwind CSS v3 Estável via CDN -->
-    <script src="https://tailwindcss.com"></script>
     <!-- Google Fonts & Material Icons -->
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <style>
-        body { font-family: 'Roboto', sans-serif; }
-        textarea, code { font-family: 'JetBrains Mono', monospace; }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 }
-    </style>
+    <!-- Link para o arquivo CSS Externo -->
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-[#f8f9fa] text-[#3c4043] min-h-screen flex flex-col">
+<body>
 
-    <!-- Header / Navbar (Estilo Google Google) -->
-    <header class="bg-white border-b border-[#e0e0e0] px-6 py-3 flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-            <span class="material-symbols-outlined text-[#1a73e8] text-2xl">translate</span>
-            <span class="text-xl text-[#5f6368] font-normal tracking-tight">git<span class="text-[#1a73e8] font-medium">-translate</span></span>
+    <!-- Header / Google Style Navbar -->
+    <header class="gt-navbar">
+        <div class="gt-nav-brand">
+            <span class="material-symbols-outlined brand-icon">translate</span>
+            <span class="brand-text">git<span class="brand-accent">-translate</span></span>
         </div>
-        <div>
-            <a href="https://github.com" target="_blank" class="text-xs font-medium text-[#5f6368] hover:bg-gray-100 px-3 py-2 rounded-md transition flex items-center space-x-1">
-                <span>GitHub Repository</span>
+        <div class="gt-nav-links">
+            <a href="https://github.com" target="_blank" class="github-btn">
+                <span>View on GitHub</span>
                 <span class="material-symbols-outlined text-sm">open_in_new</span>
             </a>
         </div>
     </header>
 
-    <!-- Main Section -->
-    <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:py-8 flex flex-col">
+    <!-- Main Content Container -->
+    <main class="gt-container">
         
-        <!-- Google Translate Dual-Panel Wrapper -->
-        <div class="bg-white rounded-lg shadow-sm border border-[#dialog] border-[#e0e0e0] flex flex-col flex-1 md:min-h-[450px]">
+        <!-- Main Translator Card Wrapper -->
+        <div class="translator-card">
             
-            <!-- Language Selectors (Abas Superiores) -->
-            <div class="flex items-center justify-between border-b border-[#e0e0e0] px-4 h-12 bg-white rounded-t-lg select-none">
-                <!-- Painel Esquerdo (Origem) -->
-                <div class="flex items-center space-x-6 h-full flex-1">
-                    <button class="text-[#1a73e8] border-b-2 border-[#1a73e8] px-2 h-full text-sm font-medium tracking-wide">
-                        JavaScript Object
-                    </button>
-                    <button class="text-[#5f6368] px-2 h-full text-sm font-medium tracking-wide hidden sm:block opacity-50 cursor-not-allowed">
-                        JSON Data
-                    </button>
+            <!-- Tab Headers (Linguagens) -->
+            <div class="lang-tabs-bar">
+                <!-- Left Source Tabs -->
+                <div class="source-tabs">
+                    <button class="lang-tab active">JavaScript Object</button>
+                    <button class="lang-tab disabled">JSON Data</button>
                 </div>
 
-                <!-- Botão de Swap Central -->
-                <div class="px-2">
-                    <button class="p-2 rounded-full hover:bg-gray-100 text-[#5f6368] flex items-center justify-center transition">
+                <!-- Swap Button Middle -->
+                <div class="swap-action">
+                    <button class="icon-btn-circle" title="Swap languages">
                         <span class="material-symbols-outlined">swap_horiz</span>
                     </button>
                 </div>
 
-                <!-- Painel Direito (Destino) -->
-                <div class="flex items-center justify-between h-full flex-1 pl-4">
-                    <button class="text-[#1a73e8] border-b-2 border-[#1a73e8] px-2 h-full text-sm font-medium tracking-wide">
-                        Pure CSS
-                    </button>
+                <!-- Right Target Tabs -->
+                <div class="target-tabs">
+                    <button class="lang-tab active">Pure CSS</button>
                     
-                    <!-- Botão Traduzir Principal -->
-                    <button id="translateBtn" class="bg-[#1a73e8] hover:bg-[#1557b0] text-white text-sm font-medium px-6 py-1.5 rounded shadow-sm transition flex items-center space-x-1">
+                    <!-- Translate Action Button Right-Aligned -->
+                    <button id="translateBtn" class="primary-action-btn">
                         <span>Translate</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Content Area (Textareas Side-by-Side) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#e0e0e0] flex-1">
+            <!-- Two-Way Editing Grid -->
+            <div class="translation-grid">
                 
-                <!-- Input Column -->
-                <div class="relative flex flex-col p-4 bg-white min-h-[220px] md:min-h-full">
-                    <textarea id="inputCode" placeholder="Paste your code here..." class="w-full h-full resize-none border-0 p-1 text-lg text-[#202124] focus:ring-0 focus:outline-none placeholder-[#80868b]" spellcheck="false">{
+                <!-- Input Panel -->
+                <div class="panel input-panel">
+                    <textarea id="inputCode" placeholder="Paste your JavaScript object here..." spellcheck="false">{
   backgroundColor: "indigo",
   padding: "16px",
   borderRadius: "8px",
   color: "#ffffff"
 }</textarea>
                     
-                    <!-- Bottom Controls (Input) -->
-                    <div class="flex items-center justify-between mt-auto pt-2">
-                        <span class="text-xs text-[#80868b]">Source Code</span>
-                        <button id="clearBtn" class="p-2 rounded-full hover:bg-gray-100 text-[#5f6368] transition" title="Clear text">
-                            <span class="material-symbols-outlined text-xl block">close</span>
+                    <div class="panel-footer">
+                        <span class="panel-info-tag">Source Code</span>
+                        <button id="clearBtn" class="icon-btn-circle" title="Clear text">
+                            <span class="material-symbols-outlined">close</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Output Column -->
-                <div class="relative flex flex-col p-4 bg-[#f8f9fa] min-h-[220px] md:min-h-full">
-                    <textarea id="outputCode" readonly placeholder="Translation" class="w-full h-full resize-none border-0 p-1 text-lg text-[#202124] bg-transparent focus:ring-0 focus:outline-none placeholder-[#80868b]" spellcheck="false"></textarea>
+                <!-- Output Panel -->
+                <div class="panel output-panel">
+                    <textarea id="outputCode" readonly placeholder="Translation" spellcheck="false"></textarea>
                     
-                    <!-- Bottom Controls (Output) -->
-                    <div class="flex items-center justify-between mt-auto pt-2">
-                        <span class="text-xs text-[#80868b]">Compiled CSS</span>
-                        <button id="copyBtn" class="p-2 rounded-full hover:bg-gray-100 text-[#5f6368] transition flex items-center space-x-1" title="Copy code">
-                            <span class="material-symbols-outlined text-xl block">content_copy</span>
-                            <span id="copyText" class="text-xs font-medium hidden px-1">Copy</span>
+                    <div class="panel-footer">
+                        <span class="panel-info-tag">Compiled CSS</span>
+                        <button id="copyBtn" class="icon-btn-circle" title="Copy code">
+                            <span class="material-symbols-outlined">content_copy</span>
+                            <span id="copyText" class="tooltip-text">Copied!</span>
                         </button>
                     </div>
                 </div>
@@ -109,14 +96,14 @@
             </div>
         </div>
 
-        <!-- Rodapé Discreto -->
-        <p class="text-center text-xs text-[#70757a] mt-6">
-            git-translate Engine Alpha &middot; Converts structures into client-safe production semantics.
+        <!-- Footer Caption -->
+        <p class="gt-footer-text">
+            git-translate Engine &middot; Open Source syntax compilation utility.
         </p>
 
     </main>
 
-    <!-- Core Translation JavaScript Logic -->
+    <!-- JavaScript Engine -->
     <script>
         const inputCode = document.getElementById('inputCode');
         const outputCode = document.getElementById('outputCode');
@@ -129,7 +116,6 @@
             try {
                 let cleaned = jsString.trim();
                 if (!cleaned.startsWith('{')) cleaned = `{${cleaned}}`;
-                
                 const obj = new Function(`return ${cleaned}`)();
                 
                 let cssResult = ".translated-style {\n";
@@ -144,7 +130,6 @@
             }
         }
 
-        // Trigger translation on click
         translateBtn.addEventListener('click', () => {
             const source = inputCode.value;
             if(!source.trim()) {
@@ -154,22 +139,18 @@
             outputCode.value = jsToCss(source);
         });
 
-        // Clear panel
         clearBtn.addEventListener('click', () => {
             inputCode.value = '';
             outputCode.value = '';
         });
 
-        // Copy functionality
         copyBtn.addEventListener('click', () => {
-            if(!outputCode.value) return;
+            if(!outputCode.value || outputCode.value.startsWith('/* Syntax')) return;
             navigator.clipboard.writeText(outputCode.value);
-            copyText.classList.remove('hidden');
-            copyText.textContent = "Copied!";
-            setTimeout(() => { copyText.classList.add('hidden'); }, 2000);
+            copyText.classList.add('show');
+            setTimeout(() => { copyText.classList.remove('show'); }, 2000);
         });
 
-        // Run initially on load
         window.addEventListener('DOMContentLoaded', () => {
             if(inputCode.value.trim()) outputCode.value = jsToCss(inputCode.value);
         });
